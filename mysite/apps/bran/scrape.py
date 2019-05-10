@@ -2,7 +2,6 @@ import re
 
 import requests
 from bs4 import BeautifulSoup
-from apps.whippet import utils
 
 class JcinkPage():
     def __init__(self, url):

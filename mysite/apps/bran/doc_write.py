@@ -65,6 +65,6 @@ def write_file(filename, posts, users, service):
 
 def doc_url(doc):
     return (
-    'https://docs.google.com/document/d/{document_id}/edit'.format(
+    'https://docs.google.com/document/d/{document_id}/edit?usp=sharing'.format(
         document_id=doc['documentId']
     ))

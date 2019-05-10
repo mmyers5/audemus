@@ -45,8 +45,8 @@ def bran():
             'printout': ''
         }
     elif request.method == 'POST':
-        username = form['username']
-        thread_url = form['thread_url']
+        username = request.form['username']
+        thread_url = request.form['thread_url']
         service = doc_write.get_service()
         thread = scrape.JcinkThread(thread_url)
         posts, users = thread.ordered_posts()

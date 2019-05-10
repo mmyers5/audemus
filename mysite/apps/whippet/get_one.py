@@ -103,4 +103,3 @@ def main(location):
     df = df_at_location(df, location)
     df = calc_encounter(df)
     return df.sample(1, weights='encounter_percent')
-

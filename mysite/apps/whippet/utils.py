@@ -1,7 +1,7 @@
 import os
 
 WORKING_DIR = (
-    '/Users/mmyers/audemus/mysite/'
+    '/home/audemus/mysite/'
 )
 SHEETS_CREDENTIALS = os.path.join(
     WORKING_DIR, 'secrets', 'sheets_credentials.json'
