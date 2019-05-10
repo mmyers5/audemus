@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <title>Wild Pokémon Generator</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="http://pokemonaudemus.jcink.net/">Audemus</a>
+          <a class="navbar-brand" href="http://audemus.pythonanywhere.com/whippet/">Whippet</a>
+          <a class="navbar-brand" href="http://audemus.pythonanywhere.com/bran/">Bran</a>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <form action=".", method="POST">
+          <p>Welcome to the Wild Pokémon Generator, where all your wildest Pokémon are generated or something.</p>
+          <p>
+            Location:<br>
+            <select name="location">
+              {% for location in locations %}
+                {% if location == form['location'] %}
+                  <option value="{{ location }}"selected>{{ location }}</option>
+                {% else%}
+                  <option value="{{ location }}">{{ location }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </p>
+          <p><input type="submit" class="btn btn-success" value="Submit"></p>
+        </form>
+      </div>
+      <div class="row" style="padding:5px;">
+        <button id="copyButton">Copy</button>
+      </div>
+      <div class="row" style="overflow:auto;height:150px;line-height:3em;padding:5px;">
+        <pre id="printout">
+          {{ form['printout'] }}
+        </pre>
+      </div>
+    </div><!--container-->
+    <script>
+      function copyFunction() {
+        const copyText = document.getElementById("printout").textContent;
+        const textArea = document.createElement('textarea');
+
+        textArea.style.position = 'fixed';
+        textArea.style.top = 0;
+        textArea.style.left = 0;
+        textArea.style.width = '2em';
+        textArea.style.height = '2em';
+        textArea.style.padding = 0;
+        textArea.style.border = 'none';
+        textArea.style.outline = 'none';
+        textArea.style.boxShadow = 'none';
+        textArea.style.background = 'transparent';
+        textArea.value = copyText;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+      }
+      document.getElementById('copyButton').addEventListener('click', copyFunction);
+    </script>
+  </body>
+</html>
