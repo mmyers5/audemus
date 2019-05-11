@@ -21,14 +21,14 @@ def get_service():
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    utils.DOCS_CREDENTIALS, SCOPES
-                )
-                creds = flow.run_local_server()
-            with open(utils.DOCS_FLOW_TOKEN, 'wb') as token:
-                pickle.dump(creds, token)
-        return build('docs', 'v1', credentials=creds)
+    else:
+        flow = InstalledAppFlow.from_client_secrets_file(
+            utils.DOCS_CREDENTIALS, SCOPES
+        )
+        creds = flow.run_local_server()
+        with open(utils.DOCS_FLOW_TOKEN, 'wb') as token:
+            pickle.dump(creds, token)
+    return build('docs', 'v1', credentials=creds)
 
 def filename(user, title, subtitle):
     return '{user} - {title} {subtitle}'.format(
