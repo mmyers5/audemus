@@ -79,7 +79,7 @@ def jeeves():
         }
     elif request.method == 'POST':
         thread_url = request.form['thread_url']
-        page = scrape.JcinkPage(url)
+        page = scrape.JcinkPage(thread_url)
         users = page.users
         posts = page.posts
         thread_score = score.ThreadScore(users, posts)
