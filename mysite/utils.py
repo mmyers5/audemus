@@ -1,0 +1,3 @@
+# bran
+N_WORDS_LEVEL = 1500.
+N_WORDS_DOLLAR = 10.

@@ -26,18 +26,10 @@
     <div class="container">
       <div class="row">
         <form action=".", method="POST">
-          <p>Welcome to the Wild Pokémon Generator, where all your wildest Pokémon are generated or something.</p>
+          <p>Wanna know what's in a thread? Just Ask Jeeves!</p>
           <p>
-            Location:<br>
-            <select name="location">
-              {% for location in locations %}
-                {% if location == form['location'] %}
-                  <option value="{{ location }}"selected>{{ location }}</option>
-                {% else%}
-                  <option value="{{ location }}">{{ location }}</option>
-                {% endif %}
-              {% endfor %}
-            </select>
+            Thread URL:<br>
+            <input type="url" name="thread_url", placeholder="URL" value="{{ form['thread_url'] }}">
           </p>
           <p><input type="submit" class="btn btn-success" value="Submit"></p>
         </form>
