@@ -102,7 +102,7 @@ def brawler():
     template = 'brawler.html'
     if request.method == 'GET':
         form = {
-            'attacker': ''
+            'attacker': '',
             'attacker_level': '',
             'defender': '',
             'defender_level': '',
@@ -120,6 +120,14 @@ def brawler():
             defender, defender_level
         )
         printout = b.printout
+        form = {
+            'attacker': attacker,
+            'attacker_level': attacker_level,
+            'defender': defender,
+            'defender_level': defender_level,
+            'attack': attack,
+            'printout': printout
+        }
     return render_template(
         template,
         form=form

@@ -6,8 +6,8 @@ from apps.brawler.info import DefenseType, Move, Specie
 class Brawl:
     def __init__(self, attacker, attacker_level, attack,
                  defender, defender_level):
-        self.attacker = Specie(attacker, attacker_level)
-        self.defender = Specie(defender, defender_level)
+        self.attacker = Specie(attacker, int(attacker_level))
+        self.defender = Specie(defender, int(defender_level))
         self.attack = Move(attack)
 
     @property
@@ -102,6 +102,6 @@ class Brawl:
                 attack_type=self.attack.attack_type
             ),
             'Pct Damage Dealt: {pct:.2f}%'.format(
-                pct=self.damage_dealt/self.defender.hp
+                pct=100*self.damage_dealt/self.defender.hp
             )
         ])
