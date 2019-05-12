@@ -2,6 +2,9 @@ from flask import Flask, request, render_template
 
 from apps.whippet import get_one
 from apps.bran import scrape, doc_write
+from apps.jeeves import scrape, score
+
+import utils
 
 app = Flask(__name__)
 
@@ -60,6 +63,33 @@ def bran():
             'username': username,
             'thread_url': thread_url,
             'printout': doc_url
+        }
+    return render_template(
+        template,
+        form=form
+    )
+
+@app.route('/jeeves/', methods=['GET', 'POST'])
+def jeeves():
+    template = 'jeeves.html'
+    if request.method == 'GET':
+        form = {
+            'thread_url': '',
+            'printout': ''
+        }
+    elif request.method == 'POST':
+        thread_url = request.form['thread_url']
+        page = scrape.JcinkPage(thread_url)
+        users = page.users
+        posts = page.posts
+        thread_score = score.ThreadScore(users, posts)
+        printout = thread_score.printout(
+            words_per_level=utils.N_WORDS_LEVEL,
+            words_per_dollar=utils.N_WORDS_DOLLAR
+        )
+        form = {
+            'thread_url': thread_url,
+            'printout': printout
         }
     return render_template(
         template,
