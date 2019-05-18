@@ -1,8 +1,9 @@
 from flask import Flask, request, render_template
 
-from apps.whippet import get_one
 from apps.bran import scrape, doc_write
+from apps.brawler import brawl
 from apps.jeeves import scrape, score
+from apps.whippet import get_one
 
 import utils
 
@@ -89,6 +90,42 @@ def jeeves():
         )
         form = {
             'thread_url': thread_url,
+            'printout': printout
+        }
+    return render_template(
+        template,
+        form=form
+    )
+
+@app.route('/brawler/', methods=['GET', 'POST'])
+def brawler():
+    template = 'brawler.html'
+    if request.method == 'GET':
+        form = {
+            'attacker': '',
+            'attacker_level': '',
+            'defender': '',
+            'defender_level': '',
+            'attack': '',
+            'printout': ''
+        }
+    elif request.method == 'POST':
+        attacker = request.form['attacker']
+        attacker_level = request.form['attacker_level']
+        defender = request.form['defender']
+        defender_level = request.form['defender_level']
+        attack = request.form['attack']
+        b = brawl.Brawl(
+            attacker, attacker_level, attack,
+            defender, defender_level
+        )
+        printout = b.printout
+        form = {
+            'attacker': attacker,
+            'attacker_level': attacker_level,
+            'defender': defender,
+            'defender_level': defender_level,
+            'attack': attack,
             'printout': printout
         }
     return render_template(

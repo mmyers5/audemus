@@ -4,7 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-    <title>Thread Scorer</title>
+    <title>Battle Calculator</title>
   </head>
   <body>
     <nav class="navbar navbar-inverse">
@@ -26,10 +26,18 @@
     <div class="container">
       <div class="row">
         <form action=".", method="POST">
-          <p>Wanna know what's in a thread? Just Ask Jeeves!</p>
+          <p>Something something fight!</p>
           <p>
-            Thread URL:<br>
-            <input type="url" name="thread_url", placeholder="URL" value="{{ form['thread_url'] }}">
+            Attacking Specie:<br>
+            <input type="text" name="attacker", placeholder="" value="{{ form['attacker'] }}"><br>
+            Level:<br>
+            <input type="number" name="attacker_level", placeholder="" value="{{ form['attacker_level'] }}"><br>
+            Defending Specie:<br>
+            <input type="text" name="defender", placeholder="" value="{{ form['defender'] }}"><br>
+            Level:<br>
+            <input type="number" name="defender_level", placeholder="" value="{{ form['defender_level'] }}"><br>
+            Attack:<br>
+            <input type="text" name="attack", placeholder="" value="{{ form['attack'] }}"><br>
           </p>
           <p><input type="submit" class="btn btn-success" value="Submit"></p>
         </form>
