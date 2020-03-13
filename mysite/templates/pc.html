@@ -5,240 +5,256 @@
   <div class="inputform">
     <form method="POST">
       <table class="inputcontainer">
-        <tr>
-          <td>
-            <input type="text" name="specie" placeholder="Specie" value="{{ form_data['specie']._input }}">
-            <select name="gender">
-              {% for set_gender in genders %}
-                {% if set_gender == form_data['gender']._input %}
-                  <option values="{{ set_gender }}" selected>{{ set_gender }}</option>
-                {% else %}
-                  <option values="{{ set_gender }}">{{ set_gender }}</option>
-                {% endif %}
-              {% endfor %}
-            </select>
-            <input
-              type="text"
-              name="name",
-              placeholder="Name"
-              value="{{ form_data['name']._input }}"
-            ><br>
-            <input type="text" name="name_size" placeholder="Font Size">
-            {% if form_data['specie'].shiny.output %}
-              <input type="checkbox" name="shiny" value="True" checked>Shiny<br>
-            {% else %}
-              <input type="checkbox" name="shiny" value="True">Shiny<br>
-            {% endif %}
-            <select name="ball_name">
-              {% for ball in balls %}
-                {% if ball == form_data['ball']._input %}
-                  <option value="{{ ball }}" selected>{{ ball }}</option>
-                {% else %}
-                  <option value="{{ ball }}">{{ ball }}</option>
-                {% endif %}
-              {% endfor %}
-            </select>
-            <select name="item_name">
-              {% for held_item in held_items %}
-                {% if held_item == form_data['item'].output %}
-                  <option value="{{ held_item }}" selected>{{ held_item }}</option>
-                {% else %}
-                  <option value="{{ held_item }}">{{ held_item }}</option>
-                {% endif %}
-              {% endfor %}
-            </select><br>
-            <input
-              type="text"
-              name="specie_type",
-              placeholder="Type1/Type2"
-              value="{{ form_data['specie'].specie_type.input }}"
-            ><br>
-            <input type="text" name="level", placeholder="Level" value="{{ form_data['level']._input }}"><br>
-            <input type="text" name="bond", placeholder="Bond" value="{{ form_data['bond']._input }}"><br>
-            <input type="text" name="ability", placeholder="Ability" value="{{ form_data['ability']._input }}"><br>
-            <input
-              type="text"
-              name="move_name_01",
-              placeholder="Move 1"
-              value="{{ form_data['moves'][1]._input }}"
-            >
-            <select name="move_type_01">
-              {% for move_type in move_types %}
-                {% if move_type == form_data['moves'][1].move_type._input %}
-                  <option value="{{ move_type }}" selected>{{ move_type }}</option>
-                {% else %}
-                  <option value="{{ move_type }}">{{ move_type }}</option>
-                {% endif %}
-              {% endfor %}
-            </select>
-            <input
-              type="text"
-              name="move_name_02",
-              placeholder="Move 2"
-              value="{{ form_data['moves'][2]._input }}"
-            >
-            <select name="move_type_02">
-              {% for move_type in move_types %}
-                {% if move_type == form_data['moves'][2].move_type._input %}
-                  <option value="{{ move_type }}" selected>{{ move_type }}</option>
-                {% else %}
-                  <option value="{{ move_type }}">{{ move_type }}</option>
-                {% endif %}
-              {% endfor %}
-            </select>
-          <br>
-            <input
-              type="text"
-              name="move_name_03",
-              placeholder="Move 3"
-              value="{{ form_data['moves'][3]._input }}"
-            >
-            <select name="move_type_03">
-              {% for move_type in move_types %}
-                {% if move_type == form_data['moves'][3].move_type._input %}
-                  <option value="{{ move_type }}" selected>{{ move_type }}</option>
-                {% else %}
-                  <option value="{{ move_type }}">{{ move_type }}</option>
-                {% endif %}
-              {% endfor %}
-            </select>
-            <input
-              type="text"
-              name="move_name_04",
-              placeholder="Move 4"
-              value="{{ form_data['moves'][4]._input }}"
-            >
-            <select name="move_type_04">
-              {% for move_type in move_types %}
-                {% if move_type == form_data['moves'][4].move_type._input %}
-                  <option value="{{ move_type }}" selected>{{ move_type }}</option>
-                {% else %}
-                  <option value="{{ move_type }}">{{ move_type }}</option>
-                {% endif %}
-              {% endfor %}
-            </select>
-          <br>
-            <input
-              type="text"
-              name="move_name_05",
-              placeholder="Move 5"
-              value="{{ form_data['moves'][5]._input }}"
-            >
-            <select name="move_type_05">
-              {% for move_type in move_types %}
-                {% if move_type == form_data['moves'][5].move_type._input %}
-                  <option value="{{ move_type }}" selected>{{ move_type }}</option>
-                {% else %}
-                  <option value="{{ move_type }}">{{ move_type }}</option>
-                {% endif %}
-              {% endfor %}
-            </select>
-            <input
-              type="text"
-              name="move_name_06",
-              placeholder="Move 6"
-              value="{{ form_data['moves'][6]._input }}"
-            >
-            <select name="move_type_06">
-              {% for move_type in move_types %}
-                {% if move_type == form_data['moves'][6].move_type._input %}
-                  <option value="{{ move_type }}" selected>{{ move_type }}</option>
-                {% else %}
-                  <option value="{{ move_type }}">{{ move_type }}</option>
-                {% endif %}
-              {% endfor %}
-            </select><br>
-          <textarea
-            class="form-control"
-            name="description"
-            placeholder="Description"
-            value="{{ description }}"
-          >{{ form_data['description'] }}</textarea>
-          </td>
-        </tr>
-      </table><br>
+        {% for ni in range(n_pcs) %}
+          {% if ni % 2 == 0 %}
+            <tr>
+          {%  endif %}
+            <td>
+              <input type="text" name="specie" placeholder="Specie" value="{{ form_data[ni]['specie']._input }}">
+              <select name="gender">
+                {% for set_gender in genders %}
+                  {% if set_gender == form_data[ni]['gender']._input %}
+                    <option values="{{ set_gender }}" selected>{{ set_gender }}</option>
+                  {% else %}
+                    <option values="{{ set_gender }}">{{ set_gender }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <input
+                type="text"
+                name="name",
+                placeholder="Name"
+                value="{{ form_data[ni]['name']._input }}"
+              ><br>
+              <input type="text" name="name_size" placeholder="Font Size">
+              {% if form_data[ni]['specie'].shiny.output %}
+                <input type="checkbox" name="shiny" value="True" checked>Shiny<br>
+              {% else %}
+                <input type="checkbox" name="shiny" value="True">Shiny<br>
+              {% endif %}
+              <select name="ball_name">
+                {% for ball in balls %}
+                  {% if ball == form_data[ni]['ball']._input %}
+                    <option value="{{ ball }}" selected>{{ ball }}</option>
+                  {% else %}
+                    <option value="{{ ball }}">{{ ball }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <select name="item_name">
+                {% for held_item in held_items %}
+                  {% if held_item == form_data[ni]['item'].output %}
+                    <option value="{{ held_item }}" selected>{{ held_item }}</option>
+                  {% else %}
+                    <option value="{{ held_item }}">{{ held_item }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <br>
+              <input
+                type="text"
+                name="specie_type",
+                placeholder="Type1/Type2"
+                value="{{ form_data[ni]['specie'].specie_type.input }}"
+              >
+              <br>
+              <input type="text" name="level", placeholder="Level" value="{{ form_data[ni]['level']._input }}"><br>
+              <input type="text" name="bond", placeholder="Bond" value="{{ form_data[ni]['bond']._input }}"><br>
+              <input type="text" name="ability", placeholder="Ability" value="{{ form_data[ni]['ability']._input }}"><br>
+              <input
+                type="text"
+                name="move_name_01",
+                placeholder="Move 1"
+                value="{{ form_data[ni]['moves'][1]._input }}"
+              >
+              <select name="move_type_01">
+                {% for move_type in move_types %}
+                  {% if move_type == form_data[ni]['moves'][1].move_type._input %}
+                    <option value="{{ move_type }}" selected>{{ move_type }}</option>
+                  {% else %}
+                    <option value="{{ move_type }}">{{ move_type }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <input
+                type="text"
+                name="move_name_02",
+                placeholder="Move 2"
+                value="{{ form_data[ni]['moves'][2]._input }}"
+              >
+              <select name="move_type_02">
+                {% for move_type in move_types %}
+                  {% if move_type == form_data[ni]['moves'][2].move_type._input %}
+                    <option value="{{ move_type }}" selected>{{ move_type }}</option>
+                  {% else %}
+                    <option value="{{ move_type }}">{{ move_type }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <br>
+              <input
+                type="text"
+                name="move_name_03",
+                placeholder="Move 3"
+                value="{{ form_data[ni]['moves'][3]._input }}"
+              >
+              <select name="move_type_03">
+                {% for move_type in move_types %}
+                  {% if move_type == form_data[ni]['moves'][3].move_type._input %}
+                    <option value="{{ move_type }}" selected>{{ move_type }}</option>
+                  {% else %}
+                    <option value="{{ move_type }}">{{ move_type }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <input
+                type="text"
+                name="move_name_04",
+                placeholder="Move 4"
+                value="{{ form_data[ni]['moves'][4]._input }}"
+              >
+              <select name="move_type_04">
+                {% for move_type in move_types %}
+                  {% if move_type == form_data[ni]['moves'][4].move_type._input %}
+                    <option value="{{ move_type }}" selected>{{ move_type }}</option>
+                  {% else %}
+                    <option value="{{ move_type }}">{{ move_type }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <br>
+              <input
+                type="text"
+                name="move_name_05",
+                placeholder="Move 5"
+                value="{{ form_data[ni]['moves'][5]._input }}"
+              >
+              <select name="move_type_05">
+                {% for move_type in move_types %}
+                  {% if move_type == form_data[ni]['moves'][5].move_type._input %}
+                    <option value="{{ move_type }}" selected>{{ move_type }}</option>
+                  {% else %}
+                    <option value="{{ move_type }}">{{ move_type }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <input
+                type="text"
+                name="move_name_06",
+                placeholder="Move 6"
+                value="{{ form_data[ni]['moves'][6]._input }}"
+              >
+              <select name="move_type_06">
+                {% for move_type in move_types %}
+                  {% if move_type == form_data[ni]['moves'][6].move_type._input %}
+                    <option value="{{ move_type }}" selected>{{ move_type }}</option>
+                  {% else %}
+                    <option value="{{ move_type }}">{{ move_type }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <br>
+              <textarea
+                class="form-control"
+                name="description"
+                placeholder="Description"
+                value="{{ description }}"
+              >{{ form_data[ni]['description'] }}</textarea>
+            </td>
+          {% if ni+1 % 2 == 0 or ni == n_pcs %}
+            </tr>
+          {% endif %}
+        {% endfor %}
+      </table>
+      <br>
       <input type="submit" class="btn btn-success" value="Submit">
     </form>
   </div>
   <table class="pccontainer">
-    <tr>
-      <td>
-        <table class="pctable">
-          <tr>
-            <th class="pcname" colspan="2">
-              {{ form_data['specie'].output }}
-              - <span class="gender">{{ form_data['gender']._input }}</span>
-              - {{ form_data['name'].output }}
-            </th>
-          </tr>
-          <tr>
-             <td class="pciconbox" rowspan="4">
-             <div class="pcicondiv">
-               <img style="margin-left:0px;" src="{{ form_data['specie'].link_output }}">
-             </div>
-             <div class="pcball">
-               <img src="{{ form_data['ball'].link_output }}" title="{{ form_data['ball']._input }}">
-             </div>
-             <div class="pcitem-on">
-               <img src="{{ form_data['item'].link_output }}" title="{{ form_data['item']._input }}">
-             </div>
-            </td>
-            <td class="pccell">{{  form_data['specie'].specie_type.input }}</td>
-          </tr>
-          <tr>
-            <td class="pccell">{{ form_data['level'].output }}</td>
-          </tr>
-          <tr>
-            <td class="pccell">{{ form_data['bond'].output }}</td>
-          </tr>
-          <tr>
-            <td class="pccell">{{ form_data['ability'].output }}</td>
-          </tr>
-          <tr>
-            <td class="pcmove1" style="background-color:{{ form_data['moves'][1].move_type.bkg_output }}">
-              <a href="{{ form_data['moves'][1].link_output }}" style="color:#000">
-                {{ form_data['moves'][1].output }}
-              </a>
-            </td>
-            <td class="pcmove2" style="background-color:{{ form_data['moves'][2].move_type.bkg_output }}">
-              <a href="{{ form_data['moves'][2].link_output }}" style="color:#000">
-                {{ form_data['moves'][2].output }}
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td class="pcmove3" style="background-color:{{ form_data['moves'][3].move_type.bkg_output }}">
-              <a href="{{ form_data['moves'][3].link_output }}" style="color:#000">
-                {{ form_data['moves'][3].output }}
-              </a>
-            </td>
-            <td class="pcmove4" style="background-color:{{ form_data['moves'][4].move_type.bkg_output }}">
-              <a href="{{ form_data['moves'][4].link_output }}" style="color:#000">
-                {{ form_data['moves'][4].output }}
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td class="pcmove5" style="background-color:{{ form_data['moves'][5].move_type.bkg_output }}">
-              <a href="{{ form_data['moves'][5].link_output }}" style="color:#000">
-                {{ form_data['moves'][5].output }}
-              </a>
-            </td>
-            <td class="pcmove6" style="background-color:{{ form_data['moves'][6].move_type.bkg_output }}">
-              <a href="{{ form_data['moves'][6].link_output }}" style="color:#000">
-                {{ form_data['moves'][6].output }}
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <div class="pcdesc">
-                {{ form_data['description'] }}
-              </div>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
+    {% for no in range(n_pcs) %}
+      {% if no % 2 == 0 %}
+        <tr>
+      {% endif %}
+        <td>
+          <table class="pctable">
+            <tr>
+              <th class="pcname" colspan="2">
+                {{ form_data[no]['specie'].output }}
+                - <span class="gender">{{ form_data[no]['gender']._input }}</span>
+                - {{ form_data[no]['name'].output }}
+              </th>
+            </tr>
+            <tr>
+               <td class="pciconbox" rowspan="4">
+               <div class="pcicondiv">
+                 <img style="margin-left:0px;" src="{{ form_data[no]['specie'].link_output }}">
+               </div>
+               <div class="pcball">
+                 <img src="{{ form_data[no]['ball'].link_output }}" title="{{ form_data[no]['ball']._input }}">
+               </div>
+               <div class="pcitem-on">
+                 <img src="{{ form_data[no]['item'].link_output }}" title="{{ form_data[no]['item']._input }}">
+               </div>
+              </td>
+              <td class="pccell">{{  form_data[no]['specie'].specie_type.input }}</td>
+            </tr>
+            <tr>
+              <td class="pccell">{{ form_data[no]['level'].output }}</td>
+            </tr>
+            <tr>
+              <td class="pccell">{{ form_data[no]['bond'].output }}</td>
+            </tr>
+            <tr>
+              <td class="pccell">{{ form_data[no]['ability'].output }}</td>
+            </tr>
+            <tr>
+              <td class="pcmove1" style="background-color:{{ form_data[no]['moves'][1].move_type.bkg_output }}">
+                <a href="{{ form_data[no]['moves'][1].link_output }}" style="color:#000">
+                  {{ form_data[no]['moves'][1].output }}
+                </a>
+              </td>
+              <td class="pcmove2" style="background-color:{{ form_data[no]['moves'][2].move_type.bkg_output }}">
+                <a href="{{ form_data[no]['moves'][2].link_output }}" style="color:#000">
+                  {{ form_data[no]['moves'][2].output }}
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td class="pcmove3" style="background-color:{{ form_data[no]['moves'][3].move_type.bkg_output }}">
+                <a href="{{ form_data[no]['moves'][3].link_output }}" style="color:#000">
+                  {{ form_data[no]['moves'][3].output }}
+                </a>
+              </td>
+              <td class="pcmove4" style="background-color:{{ form_data[no]['moves'][4].move_type.bkg_output }}">
+                <a href="{{ form_data[no]['moves'][4].link_output }}" style="color:#000">
+                  {{ form_data[no]['moves'][4].output }}
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td class="pcmove5" style="background-color:{{ form_data[no]['moves'][5].move_type.bkg_output }}">
+                <a href="{{ form_data[no]['moves'][5].link_output }}" style="color:#000">
+                  {{ form_data[no]['moves'][5].output }}
+                </a>
+              </td>
+              <td class="pcmove6" style="background-color:{{ form_data[no]['moves'][6].move_type.bkg_output }}">
+                <a href="{{ form_data[no]['moves'][6].link_output }}" style="color:#000">
+                  {{ form_data[no]['moves'][6].output }}
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <div class="pcdesc">
+                  {{ form_data[no]['description'] }}
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      {% if no+1 % 2 == 0 or no == n_pcs %}
+        </tr>
+      {% endif %}
+    {% endfor %}
   </table>
 </html>
