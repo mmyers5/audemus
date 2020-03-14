@@ -22,7 +22,7 @@ def pc_jenny():
         form = {
             **{f'{f}_{N}': None for f in FORM_FIELDS},
             **{f'description_{N}': ''},
-            **raw_form
+            **raw_form.to_dict()
         }
         return {
             'specie': jenny_schema.Specie(
