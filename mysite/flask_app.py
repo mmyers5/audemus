@@ -1,134 +1,81 @@
 from flask import Flask, request, render_template
 
-from apps.bran import scrape, doc_write
-from apps.brawler import brawl
-from apps.jeeves import scrape, score
-from apps.whippet import get_one
-
-import utils
+import apps.pc.jenny_schema as jenny_schema
 
 app = Flask(__name__)
 
-@app.route('/whippet/', methods=['GET', 'POST'])
-def whippet():
-    template = 'whippet.html'
-    values = get_one.get_sheet_values()
-    df = get_one.sheet_values_to_df(values)
-    locations = sorted(df.location.unique())
-    if request.method == 'GET':
-        form = {
-            'location': locations[0],
-            'printout': ''
-        }
-    elif request.method == 'POST':
-        location = request.form['location']
-        location_df = get_one.df_at_location(df, location)
-        location_df = get_one.calc_encounter(location_df)
-        row_entry =  location_df.sample(1, weights='encounter_percent')
-        specie = row_entry.specie.iloc[0]
-        chance = row_entry.encounter_percent.iloc[0]
-        form = {
-            'location': location,
-            'printout': '{specie} - {chance:.2f}%'.format(
-                specie=specie, chance=chance
-            )
-        }
-    return render_template(
-        template,
-        locations=locations,
-        form=form
-    )
 
-@app.route('/bran/', methods=['GET', 'POST'])
-def bran():
-    template = 'bran.html'
-    if request.method == 'GET':
+@app.route('/', methods=['GET'])
+def home():
+    return 'Sup, bitch.'
+
+
+@app.route('/pc', methods=['GET', 'POST'])
+def pc_jenny():
+    FORM_FIELDS = {
+        'specie', 'specie_type', 'shiny', 'gender', 'ball_name', 'name', 'item_name', 'level', 'bond', 'ability'
+    }
+    FORM_FIELDS.update({'move_name_0{}'.format(n + 1) for n in range(6)})
+    FORM_FIELDS.update({'move_type_0{}'.format(n + 1) for n in range(6)})
+
+    def parse_pc_form(raw_form, N):
         form = {
-            'username': '',
-            'thread_url': '',
-            'printout': ''
+            **{f'{f}_{N}': None for f in FORM_FIELDS},
+            **{f'description_{N}': ''},
+            **raw_form
         }
-    elif request.method == 'POST':
-        username = request.form['username']
-        thread_url = request.form['thread_url']
-        service = doc_write.get_service()
-        thread = scrape.JcinkThread(thread_url)
-        posts, users = thread.ordered_posts()
-        filename = doc_write.filename(
-            username, thread.title, thread.subtitle
+        return {
+            'specie': jenny_schema.Specie(
+                input=form[f'specie_{N}'],
+                specie_type=jenny_schema.SpecieType(input=form[f'specie_type_{N}']),
+                shiny=jenny_schema.Shiny(input=form[f'shiny_{N}'])
+            ),
+            'gender': jenny_schema.Gender(input=form[f'gender_{N}']),
+            'ball': jenny_schema.Ball(input=form[f'ball_name_{N}']),
+            'name': jenny_schema.BaseInput(input=form[f'name_{N}']),
+            'moves': {
+                n + 1: jenny_schema.Move(
+                    input=form['move_name_0{}_{}'.format(n + 1, N)],
+                    move_type=jenny_schema.SpecieType(
+                        input=form['move_type_0{}_{}'.format(n + 1, N)],
+                        validate=True
+                    )
+                ) for n in range(6)
+            },
+            'item': jenny_schema.Item(input=form[f'item_name_{N}']),
+            'level': jenny_schema.Level(input=form[f'level_{N}']),
+            'bond': jenny_schema.Bond(input=form[f'bond_{N}']),
+            'ability': jenny_schema.Ability(input=form[f'ability_{N}']),
+            'description': form[f'description_{N}']
+        }
+
+    def parse_multiple_pc_form(form, n_pcs):
+        return [
+            parse_pc_form(form, n) for n in range(n_pcs)
+        ]
+
+    if request.method == 'GET':
+        n_pcs = 1
+        return render_template(
+            'pc.html',
+            form_data=parse_multiple_pc_form(form={}, n_pcs=n_pcs),
+            genders=jenny_schema.Gender.VALID_INPUTS,
+            balls=jenny_schema.Ball.VALID_INPUTS,
+            move_types=jenny_schema.SpecieType.VALID_INPUTS,
+            held_items=jenny_schema.Item.VALID_INPUTS,
+            n_pcs=n_pcs
         )
-        doc = doc_write.write_file(filename, posts, users, service)
-        doc_url = doc_write.doc_url(doc)
-
-        form = {
-            'username': username,
-            'thread_url': thread_url,
-            'printout': doc_url
-        }
+    n_pcs = int(request.form['n_pcs'])
     return render_template(
-        template,
-        form=form
+        'pc.html',
+        form_data=parse_multiple_pc_form(form=request.form, n_pcs=n_pcs),
+        genders=jenny_schema.Gender.VALID_INPUTS,
+        balls=jenny_schema.Ball.VALID_INPUTS,
+        move_types=jenny_schema.SpecieType.VALID_INPUTS,
+        held_items=jenny_schema.Item.VALID_INPUTS,
+        n_pcs=n_pcs
     )
 
-@app.route('/jeeves/', methods=['GET', 'POST'])
-def jeeves():
-    template = 'jeeves.html'
-    if request.method == 'GET':
-        form = {
-            'thread_url': '',
-            'printout': ''
-        }
-    elif request.method == 'POST':
-        thread_url = request.form['thread_url']
-        page = scrape.JcinkPage(thread_url)
-        users = page.users
-        posts = page.posts
-        thread_score = score.ThreadScore(users, posts)
-        printout = thread_score.printout(
-            words_per_level=utils.N_WORDS_LEVEL,
-            words_per_dollar=utils.N_WORDS_DOLLAR
-        )
-        form = {
-            'thread_url': thread_url,
-            'printout': printout
-        }
-    return render_template(
-        template,
-        form=form
-    )
 
-@app.route('/brawler/', methods=['GET', 'POST'])
-def brawler():
-    template = 'brawler.html'
-    if request.method == 'GET':
-        form = {
-            'attacker': '',
-            'attacker_level': '',
-            'defender': '',
-            'defender_level': '',
-            'attack': '',
-            'printout': ''
-        }
-    elif request.method == 'POST':
-        attacker = request.form['attacker']
-        attacker_level = request.form['attacker_level']
-        defender = request.form['defender']
-        defender_level = request.form['defender_level']
-        attack = request.form['attack']
-        b = brawl.Brawl(
-            attacker, attacker_level, attack,
-            defender, defender_level
-        )
-        printout = b.printout
-        form = {
-            'attacker': attacker,
-            'attacker_level': attacker_level,
-            'defender': defender,
-            'defender_level': defender_level,
-            'attack': attack,
-            'printout': printout
-        }
-    return render_template(
-        template,
-        form=form
-    )
+if __name__ == '__main__':
+    app.run()
