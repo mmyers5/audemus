@@ -66,11 +66,15 @@ def pc_jenny():
             n_pcs=n_pcs
         )
     n_pcs = int(request.form['n_pcs'])
-    filled_template = render_template(
-        'pc_output.html',
-        form_data=parse_multiple_pc_form(form=request.form, n_pcs=n_pcs),
-        n_pcs=n_pcs
-    )
+    filled_template = '\n'.join([
+        '[dohtml]',
+        render_template(
+            'pc_output.html',
+            form_data=parse_multiple_pc_form(form=request.form, n_pcs=n_pcs),
+            n_pcs=n_pcs
+        ),
+        '[/dohtml]'
+    ])
     return render_template(
         'pc.html',
         form_data=parse_multiple_pc_form(form=request.form, n_pcs=n_pcs),
