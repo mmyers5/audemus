@@ -169,7 +169,7 @@ class Specie(BaseInput):
         if self._input == self.DEFAULT_INPUT:
             return ''
         unformatted_url = (
-            'https://files.jcink.net/uploads/pokemonaudemus/pokemon/{}.gif' if self.shiny.output
+            'https://files.jcink.net/uploads/pokemonaudemus/pokemon/{}.gif' if not self.shiny.output
             else 'https://files.jcink.net/uploads/pokemonaudemus/pokemon/shiny/{}.gif'
         )
         formatted_input = self._input.replace(' ', '_').lower()
@@ -187,6 +187,14 @@ class Move(BaseInput):
         return unformatted_url.format(formatted_input)
 
 
+class Ability(BaseInput):
+    @property
+    def link_output(self):
+        unformatted_url = 'https://bulbapedia.bulbagarden.net/wiki/{}_(Ability)'
+        formatted_input = self.output.replace(' ', '_')
+        return unformatted_url.format(formatted_input)
+
+
 class Level(BaseInput):
     @property
     def output(self):
@@ -200,6 +208,6 @@ class Bond(BaseInput):
     @property
     def output(self):
         try:
-            return '{:.2f}'.format(float(self._input))
+            return '{:.0f} %'.format(float(self._input))
         except ValueError:
             return ''

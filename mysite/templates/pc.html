@@ -5,13 +5,33 @@
   <div class="inputform">
     <form method="POST">
       <table class="inputcontainer">
+      <tr>
+        <td>
+          Number of PCs<br>
+          <select name="n_pcs">
+            {% for n_pc in range(6) %}
+              {% if n_pc + 1 == n_pcs %}
+                <option values="{{ n_pc + 1 }}" selected>{{ n_pc + 1 }}</option>
+              {% else %}
+                <option values="{{ n_pc + 1 }}">{{ n_pc + 1 }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+          <br><br>
+        </td>
+      </tr>
         {% for ni in range(n_pcs) %}
           {% if ni % 2 == 0 %}
             <tr>
           {%  endif %}
             <td>
-              <input type="text" name="specie" placeholder="Specie" value="{{ form_data[ni]['specie']._input }}">
-              <select name="gender">
+              <input
+                type="text"
+                name="{{ 'specie_{}'.format(ni) }}"
+                placeholder="Specie"
+                value="{{ form_data[ni]['specie']._input }}"
+              >
+              <select name="{{ 'gender_{}'.format(ni) }}">
                 {% for set_gender in genders %}
                   {% if set_gender == form_data[ni]['gender']._input %}
                     <option values="{{ set_gender }}" selected>{{ set_gender }}</option>
@@ -22,17 +42,16 @@
               </select>
               <input
                 type="text"
-                name="name",
+                name="{{ 'name_{}'.format(ni) }}",
                 placeholder="Name"
                 value="{{ form_data[ni]['name']._input }}"
               ><br>
-              <input type="text" name="name_size" placeholder="Font Size">
               {% if form_data[ni]['specie'].shiny.output %}
-                <input type="checkbox" name="shiny" value="True" checked>Shiny<br>
+                <input type="checkbox" name="{{ 'shiny_{}'.format(ni) }}" value="True" checked>Shiny<br>
               {% else %}
-                <input type="checkbox" name="shiny" value="True">Shiny<br>
+                <input type="checkbox" name="{{ 'shiny_{}'.format(ni) }}" value="True">Shiny<br>
               {% endif %}
-              <select name="ball_name">
+              <select name="{{ 'ball_name_{}'.format(ni) }}">
                 {% for ball in balls %}
                   {% if ball == form_data[ni]['ball']._input %}
                     <option value="{{ ball }}" selected>{{ ball }}</option>
@@ -41,7 +60,7 @@
                   {% endif %}
                 {% endfor %}
               </select>
-              <select name="item_name">
+              <select name="{{ 'item_name_{}'.format(ni) }}">
                 {% for held_item in held_items %}
                   {% if held_item == form_data[ni]['item'].output %}
                     <option value="{{ held_item }}" selected>{{ held_item }}</option>
@@ -53,21 +72,39 @@
               <br>
               <input
                 type="text"
-                name="specie_type",
+                name="{{ 'specie_type_{}'.format(ni) }}",
                 placeholder="Type1/Type2"
                 value="{{ form_data[ni]['specie'].specie_type.input }}"
               >
               <br>
-              <input type="text" name="level", placeholder="Level" value="{{ form_data[ni]['level']._input }}"><br>
-              <input type="text" name="bond", placeholder="Bond" value="{{ form_data[ni]['bond']._input }}"><br>
-              <input type="text" name="ability", placeholder="Ability" value="{{ form_data[ni]['ability']._input }}"><br>
               <input
                 type="text"
-                name="move_name_01",
+                name="{{ 'level_{}'.format(ni) }}",
+                placeholder="Level"
+                value="{{ form_data[ni]['level']._input }}"
+              >
+              <br>
+              <input
+                type="text"
+                name="{{ 'bond_{}'.format(ni) }}",
+                placeholder="Bond"
+                value="{{ form_data[ni]['bond']._input }}"
+              >
+              <br>
+              <input
+                type="text"
+                name="{{ 'ability_{}'.format(ni) }}",
+                placeholder="Ability"
+                value="{{ form_data[ni]['ability']._input }}"
+              >
+              <br>
+              <input
+                type="text"
+                name="{{ 'move_name_01_{}'.format(ni) }}",
                 placeholder="Move 1"
                 value="{{ form_data[ni]['moves'][1]._input }}"
               >
-              <select name="move_type_01">
+              <select name="{{ 'move_type_01_{}'.format(ni) }}">
                 {% for move_type in move_types %}
                   {% if move_type == form_data[ni]['moves'][1].move_type._input %}
                     <option value="{{ move_type }}" selected>{{ move_type }}</option>
@@ -78,11 +115,11 @@
               </select>
               <input
                 type="text"
-                name="move_name_02",
+                name="{{ 'move_name_02_{}'.format(ni) }}",
                 placeholder="Move 2"
                 value="{{ form_data[ni]['moves'][2]._input }}"
               >
-              <select name="move_type_02">
+              <select name="{{ 'move_type_02_{}'.format(ni) }}">
                 {% for move_type in move_types %}
                   {% if move_type == form_data[ni]['moves'][2].move_type._input %}
                     <option value="{{ move_type }}" selected>{{ move_type }}</option>
@@ -91,14 +128,14 @@
                   {% endif %}
                 {% endfor %}
               </select>
-              <br>
+            <br>
               <input
                 type="text"
-                name="move_name_03",
+                name="{{ 'move_name_03_{}'.format(ni) }}",
                 placeholder="Move 3"
                 value="{{ form_data[ni]['moves'][3]._input }}"
               >
-              <select name="move_type_03">
+              <select name="{{ 'move_type_03_{}'.format(ni) }}">
                 {% for move_type in move_types %}
                   {% if move_type == form_data[ni]['moves'][3].move_type._input %}
                     <option value="{{ move_type }}" selected>{{ move_type }}</option>
@@ -109,11 +146,11 @@
               </select>
               <input
                 type="text"
-                name="move_name_04",
+                name="{{ 'move_name_04_{}'.format(ni) }}",
                 placeholder="Move 4"
                 value="{{ form_data[ni]['moves'][4]._input }}"
               >
-              <select name="move_type_04">
+              <select name="{{ 'move_type_04_{}'.format(ni) }}">
                 {% for move_type in move_types %}
                   {% if move_type == form_data[ni]['moves'][4].move_type._input %}
                     <option value="{{ move_type }}" selected>{{ move_type }}</option>
@@ -122,14 +159,14 @@
                   {% endif %}
                 {% endfor %}
               </select>
-              <br>
+            <br>
               <input
                 type="text"
-                name="move_name_05",
+                name="{{ 'move_name_05_{}'.format(ni) }}",
                 placeholder="Move 5"
                 value="{{ form_data[ni]['moves'][5]._input }}"
               >
-              <select name="move_type_05">
+              <select name="{{ 'move_type_05_{}'.format(ni) }}">
                 {% for move_type in move_types %}
                   {% if move_type == form_data[ni]['moves'][5].move_type._input %}
                     <option value="{{ move_type }}" selected>{{ move_type }}</option>
@@ -140,11 +177,11 @@
               </select>
               <input
                 type="text"
-                name="move_name_06",
+                name="{{ 'move_name_06_{}'.format(ni) }}",
                 placeholder="Move 6"
                 value="{{ form_data[ni]['moves'][6]._input }}"
               >
-              <select name="move_type_06">
+              <select name="{{ 'move_type_06_{}'.format(ni) }}">
                 {% for move_type in move_types %}
                   {% if move_type == form_data[ni]['moves'][6].move_type._input %}
                     <option value="{{ move_type }}" selected>{{ move_type }}</option>
@@ -156,7 +193,7 @@
               <br>
               <textarea
                 class="form-control"
-                name="description"
+                name="{{ 'description_{}'.format(ni) }}"
                 placeholder="Description"
                 value="{{ description }}"
               >{{ form_data[ni]['description'] }}</textarea>
@@ -205,7 +242,11 @@
               <td class="pccell">{{ form_data[no]['bond'].output }}</td>
             </tr>
             <tr>
-              <td class="pccell">{{ form_data[no]['ability'].output }}</td>
+              <td class="pccell">
+                <a href="{{ form_data[no]['ability'].link_output }}" style="color:#000">
+                  {{ form_data[no]['ability'].output }}
+                </a>
+              </td>
             </tr>
             <tr>
               <td class="pcmove1" style="background-color:{{ form_data[no]['moves'][1].move_type.bkg_output }}">
