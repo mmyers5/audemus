@@ -122,11 +122,30 @@ class Shiny(BaseInput):
         return self._input == 'True'
 
 
+class Form(BaseInput):
+    VALID_INPUTS = [
+        'Form', 'Alola', 'Archipelago', 'Blade', 'Blue', 'Blue Striped', 'Bug', 'Busted', 'Continental', 'Dandy',
+        'Dark', 'Debutante', 'Diamond', 'Dragon', 'Dusk', 'East', 'Electric', 'Elegant', 'Fairy', 'Fall', 'Fan',
+        'Fancy', 'Female', 'Fighting', 'Fire', 'Flying', 'Frost', 'Galar', 'Galar Zen', 'Garden', 'Ghost', 'Grass',
+        'Green', 'Ground', 'Heart', 'Heat', 'High Plains', 'Ice', 'Icy Snow', 'Indigo', 'Jungle', 'Kabuki', 'La Reine',
+        'Large', 'Low Key', 'Marine', 'Matron', 'Meadow', 'Meteor', 'Midnight', 'Modern', 'Monsoon', 'Mow', 'Ocean',
+        'Orange', 'Pau', 'Pharaoh', 'Poison', 'Pokeball', 'Polar', 'Pompom', 'Psychic', 'Rainy', 'Red', 'River',
+        'Rock', 'Sandstorm', 'Sandy', 'Savanna', 'School', 'Sensu', 'Small', 'Snowy', 'Star', 'Steel', 'Summer', 'Sun',
+        'Sunny', 'Sunshine', 'Super', 'Trash', 'Tundra', 'Violet', 'Wash', 'Water', 'White', 'Winter', 'Yellow', 'Zen'
+    ]
+    DEFAULT_INPUT = 'Form'
+
+    @property
+    def output(self):
+        return self._input != self.DEFAULT_INPUT
+
+
 class Specie(BaseInput):
-    def __init__(self, input=None, specie_type=None, shiny=None):
+    def __init__(self, input=None, specie_type=None, shiny=None, specie_form=None):
         self._input = input if input is not None else self.DEFAULT_INPUT
         self.specie_type = specie_type if specie_type is not None else SpecieType()
         self.shiny = shiny if shiny is not None else Shiny()
+        self.specie_form = specie_form if specie_form is not None else Form()
 
     @property
     def link_output(self):
@@ -137,6 +156,12 @@ class Specie(BaseInput):
             else 'https://files.jcink.net/uploads/pokemonaudemus/pokemon/shiny/{}.gif'
         )
         formatted_input = self._input.replace(' ', '_').lower()
+        if self.specie_form.output:
+            formatted_input = '{}_{}'.format(
+                formatted_input,
+                'f' if self.specie_form._input == 'Female'
+                else self.specie_form._input.replace(' ', '_').lower()
+            )
         return unformatted_url.format(formatted_input)
 
 

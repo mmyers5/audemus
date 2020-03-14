@@ -45,12 +45,23 @@
                 name="{{ 'name_{}'.format(ni) }}",
                 placeholder="Name"
                 value="{{ form_data[ni]['name']._input }}"
-              ><br>
+              >
+              <br>
+              <select name="{{ 'specie_form_{}'.format(ni) }}">
+                {% for specie_form in specie_forms %}
+                  {% if specie_form == form_data[ni]['specie'].specie_form._input %}
+                    <option value="{{ specie_form }}" selected>{{specie_form }}</option>
+                  {% else %}
+                    <option value="{{ specie_form }}">{{ specie_form }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
               {% if form_data[ni]['specie'].shiny.output %}
-                <input type="checkbox" name="{{ 'shiny_{}'.format(ni) }}" value="True" checked>Shiny<br>
+                <input type="checkbox" name="{{ 'shiny_{}'.format(ni) }}" value="True" checked>Shiny
               {% else %}
-                <input type="checkbox" name="{{ 'shiny_{}'.format(ni) }}" value="True">Shiny<br>
+                <input type="checkbox" name="{{ 'shiny_{}'.format(ni) }}" value="True">Shiny
               {% endif %}
+            <br>
               <select name="{{ 'ball_name_{}'.format(ni) }}">
                 {% for ball in balls %}
                   {% if ball == form_data[ni]['ball']._input %}
