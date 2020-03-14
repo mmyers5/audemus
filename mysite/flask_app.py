@@ -19,10 +19,12 @@ def pc_jenny():
     FORM_FIELDS.update({'move_type_0{}'.format(n + 1) for n in range(6)})
 
     def parse_pc_form(raw_form, N):
+        if not isinstance(raw_form, dict):
+            raw_form = raw_form.to_dict()
         form = {
             **{f'{f}_{N}': None for f in FORM_FIELDS},
             **{f'description_{N}': ''},
-            **raw_form.to_dict()
+            **raw_form
         }
         return {
             'specie': jenny_schema.Specie(
@@ -66,6 +68,11 @@ def pc_jenny():
             n_pcs=n_pcs
         )
     n_pcs = int(request.form['n_pcs'])
+    filled_template = render_template(
+        'pc_output.html',
+        form_data=parse_multiple_pc_form(form=request.form, n_pcs=n_pcs),
+        n_pcs=n_pcs
+    )
     return render_template(
         'pc.html',
         form_data=parse_multiple_pc_form(form=request.form, n_pcs=n_pcs),
@@ -73,7 +80,8 @@ def pc_jenny():
         balls=jenny_schema.Ball.VALID_INPUTS,
         move_types=jenny_schema.SpecieType.VALID_INPUTS,
         held_items=jenny_schema.Item.VALID_INPUTS,
-        n_pcs=n_pcs
+        n_pcs=n_pcs,
+        filled_template=filled_template
     )
 
 
