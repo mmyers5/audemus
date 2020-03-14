@@ -19,10 +19,14 @@ def pc_jenny():
     FORM_FIELDS.update({'move_type_0{}'.format(n + 1) for n in range(6)})
 
     def parse_pc_form(raw_form, N):
+        try:
+            raw_form = raw_form.to_dict()
+        except AttributeError:
+            pass
         form = {
             **{f'{f}_{N}': None for f in FORM_FIELDS},
             **{f'description_{N}': ''},
-            **raw_form.to_dict()
+            **raw_form
         }
         return {
             'specie': jenny_schema.Specie(
