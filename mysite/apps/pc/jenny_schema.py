@@ -22,30 +22,33 @@ class BaseInput:
 
 
 class Gender(BaseInput):
-    VALID_INPUTS = {
+    VALID_INPUTS = [
         '⚲', '♀', '♂'
-    }
+    ]
     DEFAULT_INPUT = '⚲'
 
 
 class Ball(BaseInput):
-    VALID_INPUTS = {
-        'Cherish Ball', 'Dive Ball', 'Dream Ball', 'Dusk Ball', 'Fast Ball', 'Friend Ball', 'Great Ball', 'Heal Ball',
-        'Heavy Ball', 'Level Ball', 'Love Ball', 'Lure Ball', 'Luxury Ball', 'Moon Ball', 'Nest Ball', 'Net Ball',
-        'Poke Ball', 'Quick Ball', 'Repeat Ball', 'Timer Ball', 'Ultra Ball'
-    }
+    VALID_INPUTS = [
+        'Poke Ball', 'None', 'Cherish Ball', 'Dive Ball', 'Dream Ball', 'Dusk Ball', 'Fast Ball', 'Friend Ball', 'Great Ball',
+        'Heal Ball', 'Heavy Ball', 'Level Ball', 'Love Ball', 'Lure Ball', 'Luxury Ball', 'Moon Ball', 'Nest Ball',
+        'Net Ball', 'Quick Ball', 'Repeat Ball', 'Timer Ball', 'Ultra Ball'
+    ]
     DEFAULT_INPUT = 'Poke Ball'
 
     @property
     def link_output(self):
         formatted_input = self._input.replace(' ', '_').lower()
-        return 'https://files.jcink.net/uploads/pokemonaudemus/Shop_Items/{}.png'.format(
-            formatted_input
+        return (
+            '' if self._input == 'None'
+            else 'https://files.jcink.net/uploads/pokemonaudemus/Shop_Items/{}.png'.format(
+                formatted_input
+            )
         )
 
 
 class Item(BaseInput):
-    VALID_INPUTS = {
+    VALID_INPUTS = [
         'Item', 'Air Balloon', 'Amulet Coin', 'Assault Vest', 'Big Root', 'Binding Band', 'Black Belt', 'Black Glasses',
         'Black Sludge', 'Bright Powder', 'Bug Memory', 'Charcoal', 'Choice Band', 'Choice Scarf', 'Choice Specs',
         'Cleanse Tag', 'Damp Rock', 'Dark Memory', 'Deep Sea Scale', 'Deep Sea Tooth', 'Destiny Knot', 'Dragon Fang',
@@ -61,7 +64,7 @@ class Item(BaseInput):
         'Shiny Charm', 'Silk Scarf', 'Silver Powder', 'Smooth Rock', 'Snowball', 'Soft Sand', 'Soothe Bell',
         'Spell Tag', 'Steel Memory', 'Stick', 'Sticky Barb', 'Terrain Extender', 'Thick Club', 'Toxic Orb',
         'Twisted Spoon', 'Water Memory', 'Wave Incense', 'Wide Lens', 'Wise Glasses', 'Yellow Scarf', 'Zoom Lens'
-    }
+    ]
     DEFAULT_INPUT = 'Item'
 
     @property
@@ -75,10 +78,10 @@ class Item(BaseInput):
 
 
 class SpecieType(BaseInput):
-    VALID_INPUTS = {
+    VALID_INPUTS = [
         'Type', 'Bug', 'Dark', 'Dragon', 'Electric', 'Fairy', 'Fighting', 'Fire', 'Flying', 'Ghost', 'Grass',
         'Ground', 'Ice', 'Normal', 'Poison', 'Psychic', 'Rock', 'Steel', 'Water'
-    }
+    ]
     DEFAULT_INPUT = 'Type'
 
     @property
@@ -114,7 +117,7 @@ class SpecieType(BaseInput):
 
 
 class Shiny(BaseInput):
-    VALID_INPUTS = {'True', 'False'}
+    VALID_INPUTS = ['False', 'True']
     DEFAULT_INPUT = 'False'
 
     @property
