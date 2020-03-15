@@ -24,9 +24,11 @@
                <div class="pcball">
                  <img src="{{ form_data[no]['ball'].link_output }}" title="{{ form_data[no]['ball']._input }}">
                </div>
-               <div class="pcitem-on">
-                 <img src="{{ form_data[no]['item'].link_output }}" title="{{ form_data[no]['item']._input }}">
-               </div>
+                 {% if form_data[no]['item']._input == 'Item' %}
+                   <div class="pcitem-off">
+                 {% else %}
+                   <div class="pcitem-on">
+                 {% endif %}
               </td>
               <td class="pccell">{{  form_data[no]['specie'].specie_type.input }}</td>
             </tr>
