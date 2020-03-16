@@ -173,6 +173,7 @@ class Move(BaseInput):
         self._input = input if input is not None else self.DEFAULT_INPUT
         self.move_type = move_type if move_type is not None else SpecieType()
 
+    @property
     def link_output(self):
         unformatted_url = 'https://bulbapedia.bulbagarden.net/wiki/{}_(move)'
         formatted_input = self.output.replace(' ', '_')
