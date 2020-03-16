@@ -29,6 +29,8 @@
                  {% else %}
                    <div class="pcitem-on">
                  {% endif %}
+                 <img src="{{ form_data[no]['item'].link_output }}" title="{{ form_data[no]['item']._input }}">
+               </div>
               </td>
               <td class="pccell">{{  form_data[no]['specie'].specie_type.input }}</td>
             </tr>
