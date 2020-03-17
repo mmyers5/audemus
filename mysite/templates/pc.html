@@ -81,12 +81,24 @@
                 {% endfor %}
               </select>
               <br>
-              <input
-                type="text"
-                name="{{ 'specie_type_{}'.format(ni) }}",
-                placeholder="Type1/Type2"
-                value="{{ form_data[ni]['specie'].specie_type.input }}"
-              >
+              <select name="{{ 'specie_type_1_{}'.format(ni) }}">
+                {% for specie_type in types %}
+                  {% if specie_type == form_data[ni]['specie'].specie_type_1._input %}
+                    <option value="{{ specie_type }}" selected>{{ specie_type }}</option>
+                  {% else %}
+                    <option value="{{ specie_type }}">{{ specie_type }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <select name="{{ 'specie_type_2_{}'.format(ni) }}">
+                {% for specie_type in types %}
+                  {% if specie_type == form_data[ni]['specie'].specie_type_2._input %}
+                    <option value="{{ specie_type }}" selected>{{ specie_type }}</option>
+                  {% else %}
+                    <option value="{{ specie_type }}">{{ specie_type }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
               <br>
               <input
                 type="text"
@@ -116,7 +128,7 @@
                 value="{{ form_data[ni]['moves'][1]._input }}"
               >
               <select name="{{ 'move_type_01_{}'.format(ni) }}">
-                {% for move_type in move_types %}
+                {% for move_type in types %}
                   {% if move_type == form_data[ni]['moves'][1].move_type._input %}
                     <option value="{{ move_type }}" selected>{{ move_type }}</option>
                   {% else %}
@@ -131,7 +143,7 @@
                 value="{{ form_data[ni]['moves'][2]._input }}"
               >
               <select name="{{ 'move_type_02_{}'.format(ni) }}">
-                {% for move_type in move_types %}
+                {% for move_type in types %}
                   {% if move_type == form_data[ni]['moves'][2].move_type._input %}
                     <option value="{{ move_type }}" selected>{{ move_type }}</option>
                   {% else %}
@@ -147,7 +159,7 @@
                 value="{{ form_data[ni]['moves'][3]._input }}"
               >
               <select name="{{ 'move_type_03_{}'.format(ni) }}">
-                {% for move_type in move_types %}
+                {% for move_type in types %}
                   {% if move_type == form_data[ni]['moves'][3].move_type._input %}
                     <option value="{{ move_type }}" selected>{{ move_type }}</option>
                   {% else %}
@@ -162,7 +174,7 @@
                 value="{{ form_data[ni]['moves'][4]._input }}"
               >
               <select name="{{ 'move_type_04_{}'.format(ni) }}">
-                {% for move_type in move_types %}
+                {% for move_type in types %}
                   {% if move_type == form_data[ni]['moves'][4].move_type._input %}
                     <option value="{{ move_type }}" selected>{{ move_type }}</option>
                   {% else %}
@@ -178,7 +190,7 @@
                 value="{{ form_data[ni]['moves'][5]._input }}"
               >
               <select name="{{ 'move_type_05_{}'.format(ni) }}">
-                {% for move_type in move_types %}
+                {% for move_type in types %}
                   {% if move_type == form_data[ni]['moves'][5].move_type._input %}
                     <option value="{{ move_type }}" selected>{{ move_type }}</option>
                   {% else %}
@@ -193,7 +205,7 @@
                 value="{{ form_data[ni]['moves'][6]._input }}"
               >
               <select name="{{ 'move_type_06_{}'.format(ni) }}">
-                {% for move_type in move_types %}
+                {% for move_type in types %}
                   {% if move_type == form_data[ni]['moves'][6].move_type._input %}
                     <option value="{{ move_type }}" selected>{{ move_type }}</option>
                   {% else %}
@@ -248,7 +260,7 @@
                  <img src="{{ form_data[no]['item'].link_output }}" title="{{ form_data[no]['item']._input }}">
                </div>
               </td>
-              <td class="pccell">{{  form_data[no]['specie'].specie_type.input }}</td>
+              <td class="pccell">{{  form_data[no]['specie'].specie_type }}</td>
             </tr>
             <tr>
               <td class="pccell">{{ form_data[no]['level'].output }}</td>

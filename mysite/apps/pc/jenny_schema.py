@@ -144,9 +144,10 @@ class Form(BaseInput):
 
 
 class Specie(BaseInput):
-    def __init__(self, input=None, specie_type=None, shiny=None, specie_form=None):
+    def __init__(self, input=None, specie_type_1=None, specie_type_2=None, shiny=None, specie_form=None):
         self._input = input if input is not None else self.DEFAULT_INPUT
-        self.specie_type = specie_type if specie_type is not None else SpecieType()
+        self.specie_type_1 = specie_type_1 if specie_type_1 is not None else SpecieType()
+        self.specie_type_2 = specie_type_2 if specie_type_2 is not None else SpecieType()
         self.shiny = shiny if shiny is not None else Shiny()
         self.specie_form = specie_form if specie_form is not None else Form()
 
@@ -166,6 +167,18 @@ class Specie(BaseInput):
                 else self.specie_form._input.replace(' ', '_').lower()
             )
         return unformatted_url.format(formatted_input)
+
+    @property
+    def specie_type(self):
+        if self.specie_type_1._input == SpecieType.DEFAULT_INPUT:
+            return ''
+        elif self.specie_type_2._input == SpecieType.DEFAULT_INPUT:
+            return ' :{}: '.format(self.specie_type_1._input.lower())
+        else:
+            return ' :{}: / :{}: '.format(
+                self.specie_type_1._input.lower(),
+                self.specie_type_2._input.lower()
+            )
 
 
 class Move(BaseInput):

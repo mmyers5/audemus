@@ -13,7 +13,7 @@ def home():
 @app.route('/pc', methods=['GET', 'POST'])
 def pc_jenny():
     FORM_FIELDS = {
-        'specie', 'specie_type', 'shiny', 'gender',
+        'specie', 'specie_type_1', 'specie_type_2', 'shiny', 'gender',
         'ball_name', 'name', 'item_name', 'level',
         'bond', 'ability', 'specie_form'
     }
@@ -32,7 +32,8 @@ def pc_jenny():
         return {
             'specie': jenny_schema.Specie(
                 input=form[f'specie_{N}'],
-                specie_type=jenny_schema.SpecieType(input=form[f'specie_type_{N}']),
+                specie_type_1=jenny_schema.SpecieType(input=form[f'specie_type_1_{N}']),
+                specie_type_2=jenny_schema.SpecieType(input=form[f'specie_type_2_{N}']),
                 shiny=jenny_schema.Shiny(input=form[f'shiny_{N}']),
                 specie_form=jenny_schema.Form(input=form[f'specie_form_{N}'])
             ),
@@ -67,7 +68,7 @@ def pc_jenny():
             form_data=parse_multiple_pc_form(form={}, n_pcs=n_pcs),
             genders=jenny_schema.Gender.VALID_INPUTS,
             balls=jenny_schema.Ball.VALID_INPUTS,
-            move_types=jenny_schema.SpecieType.VALID_INPUTS,
+            types=jenny_schema.SpecieType.VALID_INPUTS,
             held_items=jenny_schema.Item.VALID_INPUTS,
             specie_forms=jenny_schema.Form.VALID_INPUTS,
             n_pcs=n_pcs
@@ -87,7 +88,7 @@ def pc_jenny():
         form_data=parse_multiple_pc_form(form=request.form, n_pcs=n_pcs),
         genders=jenny_schema.Gender.VALID_INPUTS,
         balls=jenny_schema.Ball.VALID_INPUTS,
-        move_types=jenny_schema.SpecieType.VALID_INPUTS,
+        types=jenny_schema.SpecieType.VALID_INPUTS,
         held_items=jenny_schema.Item.VALID_INPUTS,
         specie_forms=jenny_schema.Form.VALID_INPUTS,
         n_pcs=n_pcs,
