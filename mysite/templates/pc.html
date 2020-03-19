@@ -9,7 +9,7 @@
           <td>
             Number of PCs<br>
             <select name="n_pcs">
-              {% for n_pc in range(6) %}
+              {% for n_pc in range(20) %}
                 {% if n_pc + 1 == n_pcs %}
                   <option values="{{ n_pc + 1 }}" selected>{{ n_pc + 1 }}</option>
                 {% else %}
