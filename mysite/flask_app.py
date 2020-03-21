@@ -50,7 +50,7 @@ def pc_jenny():
                 ) for n in range(6)
             },
             'item': jenny_schema.Item(input=form[f'item_name_{N}']),
-            'level': jenny_schema.Level(input=form[f'level_{N}']),
+            'level': jenny_schema.BaseInput(input=form[f'level_{N}']),
             'bond': jenny_schema.Bond(input=form[f'bond_{N}']),
             'ability': jenny_schema.Ability(input=form[f'ability_{N}']),
             'description': form[f'description_{N}']
