@@ -176,9 +176,11 @@
             <div class="pcicondiv">
               <img style="margin-left:0px;" src="{{ form_data[no]['specie'].link_output }}">
             </div>
+            {% if form_data[no]['ball']._input != 'None' %}
             <div class="pcball">
               <img src="{{ form_data[no]['ball'].link_output }}" title="{{ form_data[no]['ball']._input }}">
             </div>
+            {% endif %}
             {% if form_data[no]['item']._input == 'Item' %}
             <div class="pcitem-off">
             {% else %}
