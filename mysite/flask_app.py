@@ -21,6 +21,7 @@ def pc():
     }
     FORM_FIELDS.update({'move_name_0{}'.format(n + 1) for n in range(6)})
     FORM_FIELDS.update({'move_type_0{}'.format(n + 1) for n in range(6)})
+
     def parse_pc_form(raw_form, N):
         try:
             raw_form = raw_form.to_dict()
@@ -65,29 +66,23 @@ def pc():
 
     if request.method == 'GET':
         n_pcs = 1
-        return render_template(
-            'pc.html',
-            form_data=parse_multiple_pc_form(form={}, n_pcs=n_pcs),
-            genders=jenny_schema.Gender.VALID_INPUTS,
-            balls=jenny_schema.Ball.VALID_INPUTS,
-            types=jenny_schema.SpecieType.VALID_INPUTS,
-            held_items=jenny_schema.Item.VALID_INPUTS,
-            specie_forms=jenny_schema.Form.VALID_INPUTS,
+        form_data = parse_multiple_pc_form(form={}, n_pcs=n_pcs)
+        filled_template = ''
+    elif request.method == 'POST':
+        n_pcs = int(request.form['n_pcs'])
+        form_data = parse_multiple_pc_form(form=request.form, n_pcs=n_pcs)
+        filled_template = render_template(
+            'pc_output.html',
+            form_data=form_data,
             n_pcs=n_pcs
         )
-    n_pcs = int(request.form['n_pcs'])
-    filled_template = render_template(
-        'pc_output.html',
-        form_data=parse_multiple_pc_form(form=request.form, n_pcs=n_pcs),
-        n_pcs=n_pcs
-    )
-    filled_template = os.linesep.join([
-        s for s in filled_template.splitlines() if s.strip()
-    ])
-    filled_template = f'[dohtml]\n{filled_template}\n[/dohtml]'
+        filled_template = os.linesep.join([
+            s for s in filled_template.splitlines() if s.strip()
+        ])
+        filled_template = f'[dohtml]\n{filled_template}\n[/dohtml]'
     return render_template(
         'pc.html',
-        form_data=parse_multiple_pc_form(form=request.form, n_pcs=n_pcs),
+        form_data=form_data,
         genders=jenny_schema.Gender.VALID_INPUTS,
         balls=jenny_schema.Ball.VALID_INPUTS,
         types=jenny_schema.SpecieType.VALID_INPUTS,
