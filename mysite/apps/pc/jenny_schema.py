@@ -30,17 +30,17 @@ class Gender(BaseInput):
 
 class Ball(BaseInput):
     VALID_INPUTS = [
-        'Poke Ball', 'None', 'Cherish Ball', 'Dive Ball', 'Dream Ball', 'Dusk Ball', 'Fast Ball', 'Friend Ball', 'Great Ball',
+        'Ball', 'Poke Ball', 'Cherish Ball', 'Dive Ball', 'Dream Ball', 'Dusk Ball', 'Fast Ball', 'Friend Ball', 'Great Ball',
         'Heal Ball', 'Heavy Ball', 'Level Ball', 'Love Ball', 'Lure Ball', 'Luxury Ball', 'Moon Ball', 'Nest Ball',
         'Net Ball', 'Quick Ball', 'Repeat Ball', 'Timer Ball', 'Ultra Ball'
     ]
-    DEFAULT_INPUT = 'Poke Ball'
+    DEFAULT_INPUT = 'Ball'
 
     @property
     def link_output(self):
         formatted_input = self._input.replace(' ', '_').lower()
         return (
-            '' if self._input == 'None'
+            '' if self._input == self.DEFAULT_INPUT
             else 'https://files.jcink.net/uploads/pokemonaudemus/Shop_Items/{}.png'.format(
                 formatted_input
             )
@@ -86,9 +86,10 @@ class SpecieType(BaseInput):
 
     @property
     def input(self):
-        if self._input == 'Type':
-            return ''
-        return self._input
+        return (
+            '' if self._input == self.DEFAULT_INPUT
+            else self._input
+        )
 
     @property
     def bkg_output(self):
@@ -199,15 +200,6 @@ class Ability(BaseInput):
         unformatted_url = 'https://bulbapedia.bulbagarden.net/wiki/{}_(Ability)'
         formatted_input = self.output.replace(' ', '_')
         return unformatted_url.format(formatted_input)
-
-
-class Level(BaseInput):
-    @property
-    def output(self):
-        try:
-            return '{:.0f}'.format(int(self._input))
-        except ValueError:
-            return ''
 
 
 class Bond(BaseInput):
