@@ -77,7 +77,7 @@ def pc():
         )
     n_pcs = int(request.form['n_pcs'])
     filled_template = render_template(
-        'pc_output_old.html',
+        'pc_output.html',
         form_data=parse_multiple_pc_form(form=request.form, n_pcs=n_pcs),
         n_pcs=n_pcs
     )
