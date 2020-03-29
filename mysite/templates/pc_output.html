@@ -1,9 +1,10 @@
 <html>
+  {% block pc_output %}
   <head>
     <link href='https://files.jcink.net/uploads/pokemonaudemus/Utility/PCBoxStylesheet.css' rel='stylesheet' type='text/css'>
   </head>
   <table class="pccontainer">
-  {% for no in range(n_pcs) %}
+    {% for no in range(n_pcs) %}
     {% if no % 2 == 0 %}
     <tr>
     {% endif %}
@@ -18,21 +19,21 @@
           </tr>
           <tr>
             <td class="pciconbox" rowspan="4">
-              <div class="pcicondiv">
-                <img style="margin-left:0px;" src="{{ form_data[no]['specie'].link_output }}">
-              </div>
-              {% if form_data[no]['ball']._input != 'None' %}
-              <div class="pcball">
-                <img src="{{ form_data[no]['ball'].link_output }}" title="{{ form_data[no]['ball']._input }}">
-              </div>
-              {% endif %}
-              {% if form_data[no]['item']._input == 'Item' %}
-              <div class="pcitem-off">
-              {% else %}
-              <div class="pcitem-on">
-              {% endif %}
-                <img src="{{ form_data[no]['item'].link_output }}" title="{{ form_data[no]['item']._input }}">
-              </div>
+            <div class="pcicondiv">
+              <img style="margin-left:0px;" src="{{ form_data[no]['specie'].link_output }}">
+            </div>
+            {% if form_data[no]['ball']._input != 'None' %}
+            <div class="pcball">
+              <img src="{{ form_data[no]['ball'].link_output }}" title="{{ form_data[no]['ball']._input }}">
+            </div>
+            {% endif %}
+            {% if form_data[no]['item']._input == 'Item' %}
+            <div class="pcitem-off">
+            {% else %}
+            <div class="pcitem-on">
+            {% endif %}
+              <img src="{{ form_data[no]['item'].link_output }}" title="{{ form_data[no]['item']._input }}">
+            </div>
             </td>
             <td class="pccell">{{  form_data[no]['specie'].specie_type }}</td>
           </tr>
@@ -53,11 +54,11 @@
           {% if nmt % 2 == 0 %}
           <tr>
           {% endif %}
-          <td class="{{ 'pcmove{}'.format(nmt+1) }}" style="background-color:{{ form_data[no]['moves'][nmt+1].move_type.bkg_output }}">
-            <a href="{{ form_data[no]['moves'][nmt+1].link_output }}" style="color:#000">
-              {{ form_data[no]['moves'][nmt+1].output }}
-            </a>
-          </td>
+            <td class="{{ 'pcmove{}'.format(nmt+1) }}" style="background-color:{{ form_data[no]['moves'][nmt+1].move_type.bkg_output }}">
+              <a href="{{ form_data[no]['moves'][nmt+1].link_output }}" style="color:#000">
+                {{ form_data[no]['moves'][nmt+1].output }}
+              </a>
+            </td>
           {% if nmt+1 % 2 == 0 %}
           </tr>
           {% endif %}
@@ -74,6 +75,7 @@
     {% if no+1 % 2 == 0 or no == n_pcs %}
     </tr>
     {% endif %}
-  {% endfor %}
+    {% endfor %}
   </table>
+  {% endblock %}
 </html>
