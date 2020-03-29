@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request, render_template
 
 import apps.pc.jenny_schema as jenny_schema
@@ -11,7 +13,7 @@ def home():
 
 
 @app.route('/pc', methods=['GET', 'POST'])
-def pc_jenny():
+def pc():
     FORM_FIELDS = {
         'specie', 'specie_type_1', 'specie_type_2', 'shiny', 'gender',
         'ball_name', 'name', 'item_name', 'level',
@@ -74,15 +76,15 @@ def pc_jenny():
             n_pcs=n_pcs
         )
     n_pcs = int(request.form['n_pcs'])
-    filled_template = '\n'.join([
-        '[dohtml]',
-        render_template(
-            'pc_output.html',
-            form_data=parse_multiple_pc_form(form=request.form, n_pcs=n_pcs),
-            n_pcs=n_pcs
-        ),
-        '[/dohtml]'
+    filled_template = render_template(
+        'pc_output_old.html',
+        form_data=parse_multiple_pc_form(form=request.form, n_pcs=n_pcs),
+        n_pcs=n_pcs
+    )
+    filled_template = os.linesep.join([
+        s for s in filled_template.splitlines() if s.strip()
     ])
+    filled_template = f'[dohtml]\n{filled_template}\n[/dohtml]'
     return render_template(
         'pc.html',
         form_data=parse_multiple_pc_form(form=request.form, n_pcs=n_pcs),

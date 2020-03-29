@@ -1,0 +1,163 @@
+<html>
+  {% block pc_input %}
+  <head>
+    <link href='https://files.jcink.net/uploads/pokemonaudemus/Utility/PCBoxStylesheet.css' rel='stylesheet' type='text/css'>
+  </head>
+  <div class="inputform">
+    <form method="POST">
+      <table class="inputcontainer">
+        <tr>
+          <td>
+            <br><br>
+            Number of PCs<br>
+            <select name="n_pcs">
+              {% for n_pc in range(20) %}
+              {% if n_pc + 1 == n_pcs %}
+              <option values="{{ n_pc + 1 }}" selected>{{ n_pc + 1 }}</option>
+              {% else %}
+              <option values="{{ n_pc + 1 }}">{{ n_pc + 1 }}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+            <br><br>
+          </td>
+        </tr>
+        {% for ni in range(n_pcs) %}
+        {% if ni % 2 == 0 %}
+        <tr>
+        {% endif %}
+          <td>
+            <input
+              type="text"
+              name="{{ 'specie_{}'.format(ni) }}"
+              placeholder="Specie"
+              value="{{ form_data[ni]['specie']._input }}"
+            >
+            <select name="{{ 'gender_{}'.format(ni) }}">
+              {% for set_gender in genders %}
+              {% if set_gender == form_data[ni]['gender']._input %}
+              <option values="{{ set_gender }}" selected>{{ set_gender }}</option>
+              {% else %}
+              <option values="{{ set_gender }}">{{ set_gender }}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+            <input
+              type="text"
+              name="{{ 'name_{}'.format(ni) }}",
+              placeholder="Name"
+              value="{{ form_data[ni]['name']._input }}"
+            >
+            <br>
+            <select name="{{ 'specie_form_{}'.format(ni) }}">
+              {% for specie_form in specie_forms %}
+              {% if specie_form == form_data[ni]['specie'].specie_form._input %}
+              <option value="{{ specie_form }}" selected>{{specie_form }}</option>
+              {% else %}
+              <option value="{{ specie_form }}">{{ specie_form }}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+            {% if form_data[ni]['specie'].shiny.output %}
+            <input type="checkbox" name="{{ 'shiny_{}'.format(ni) }}" value="True" checked>Shiny
+            {% else %}
+            <input type="checkbox" name="{{ 'shiny_{}'.format(ni) }}" value="True">Shiny
+            {% endif %}
+            <br>
+            <select name="{{ 'ball_name_{}'.format(ni) }}">
+              {% for ball in balls %}
+              {% if ball == form_data[ni]['ball']._input %}
+              <option value="{{ ball }}" selected>{{ ball }}</option>
+              {% else %}
+              <option value="{{ ball }}">{{ ball }}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+            <select name="{{ 'item_name_{}'.format(ni) }}">
+              {% for held_item in held_items %}
+              {% if held_item == form_data[ni]['item'].output %}
+              <option value="{{ held_item }}" selected>{{ held_item }}</option>
+              {% else %}
+              <option value="{{ held_item }}">{{ held_item }}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+            <br>
+            <select name="{{ 'specie_type_1_{}'.format(ni) }}">
+              {% for specie_type in types %}
+              {% if specie_type == form_data[ni]['specie'].specie_type_1._input %}
+              <option value="{{ specie_type }}" selected>{{ specie_type }}</option>
+              {% else %}
+              <option value="{{ specie_type }}">{{ specie_type }}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+            <select name="{{ 'specie_type_2_{}'.format(ni) }}">
+              {% for specie_type in types %}
+              {% if specie_type == form_data[ni]['specie'].specie_type_2._input %}
+              <option value="{{ specie_type }}" selected>{{ specie_type }}</option>
+              {% else %}
+              <option value="{{ specie_type }}">{{ specie_type }}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+            <br>
+            <input
+              type="text"
+              name="{{ 'level_{}'.format(ni) }}",
+              placeholder="Level"
+              value="{{ form_data[ni]['level']._input }}"
+            >
+            <br>
+            <input
+              type="text"
+              name="{{ 'bond_{}'.format(ni) }}",
+              placeholder="Bond"
+              value="{{ form_data[ni]['bond']._input }}"
+            >
+            <br>
+            <input
+              type="text"
+              name="{{ 'ability_{}'.format(ni) }}",
+              placeholder="Ability"
+              value="{{ form_data[ni]['ability']._input }}"
+            >
+            {% for nmt in range(6) %}
+            {% if nmt % 2 == 0 %}
+            <br>
+            {% endif %}
+            <input
+              type="text"
+              name="{{ 'move_name_0{}_{}'.format(nmt+1, ni) }}",
+              placeholder={{ "Move {}".format(nmt+1) }}
+              value="{{ form_data[ni]['moves'][nmt+1]._input }}"
+            >
+            <select name="{{ 'move_type_0{}_{}'.format(nmt+1, ni) }}">
+              {% for move_type in types %}
+              {% if move_type == form_data[ni]['moves'][nmt+1].move_type._input %}
+              <option value="{{ move_type }}" selected>{{ move_type }}</option>
+              {% else %}
+              <option value="{{ move_type }}">{{ move_type }}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+            {% endfor %}
+            <br>
+            <textarea
+              class="form-control"
+              name="{{ 'description_{}'.format(ni) }}"
+              placeholder="Description"
+              value="{{ description }}"
+            >{{ form_data[ni]['description'] }}</textarea>
+          </td>
+        {% if ni+1 % 2 == 0 or ni == n_pcs %}
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </table>
+      <br>
+      <input type="submit" class="btn btn-success" value="Submit">
+    </form>
+  </div>
+  {% endblock %}
+</html>
