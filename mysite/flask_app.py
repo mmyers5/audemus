@@ -3,6 +3,7 @@ import os
 from flask import Flask, request, render_template
 
 import apps.pc.jenny_schema as jenny_schema
+import apps.jeeves.scrape as jeeves_scrape
 
 app = Flask(__name__)
 
@@ -89,6 +90,26 @@ def pc():
         held_items=jenny_schema.Item.VALID_INPUTS,
         specie_forms=jenny_schema.Form.VALID_INPUTS,
         n_pcs=n_pcs,
+        filled_template=filled_template
+    )
+
+
+@app.route('/jeeves', methods=['GET', 'POST'])
+def jeeves():
+    if request.method == 'GET':
+        form_data =  {
+            'thread_url': ''
+        }
+        filled_template = ''
+    elif request.method == 'POST':
+        form_data = {
+            'thread_url': request.form['thread_url']
+        }
+        thread = jeeves_scrape.JcinkThread(url=request.form['thread_url'])
+        filled_template = thread.output
+    return render_template(
+        'jeeves.html',
+        form_data=form_data,
         filled_template=filled_template
     )
 
