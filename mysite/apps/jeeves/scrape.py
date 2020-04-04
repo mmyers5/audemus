@@ -3,14 +3,35 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
-class JcinkPage():
-    def __init__(self, url):
-        self.url = url
-        self.soup = self.set_soup()
+from apps.jeeves import score as jeeves_score
+from apps.secrets import USERNAME, PASSWORD
 
-    def set_soup(self):
-        page = requests.get(self.url)
-        return BeautifulSoup(page.text, 'html.parser')
+
+class JcinkBase:
+    def __init__(self):
+        self._login_credentials = {
+            'UserName': USERNAME,
+            'PassWord': PASSWORD
+        }
+        self._login_url = 'http://pokemonaudemus.jcink.net/index.php?act=Login&CODE=01'
+
+
+class JcinkPage(JcinkBase):
+    def __init__(self, url):
+        super().__init__()
+        self.url = url
+        self.soup = self.get_soup()
+
+    def get_soup(self):
+        with requests.Session() as s:
+            login_response = s.post(self._login_url, data=self._login_credentials)
+            page_response = s.get(self.url)
+        return BeautifulSoup(page_response.text, 'html.parser')
+
+    def parse_post(self, post):
+        post = post.get_text(separator=' ')
+        post = re.sub('\n', '', post)
+        return ' '.join(post.split())
 
     @property
     def posts(self):
@@ -23,8 +44,8 @@ class JcinkPage():
     def users(self):
         tag = 'div'
         attrs = {'class': 'cps-name'}
-        user_raw = self.soup.find_all(tag, attrs)
-        return [u.text for u in user_raw]
+        users_raw = self.soup.find_all(tag, attrs)
+        return [u.text for u in users_raw]
 
     @property
     def current_page(self):
@@ -37,39 +58,15 @@ class JcinkPage():
         else:
             return int(p.get_text())
 
-    @staticmethod
-    def parse_post(post):
-        post = post.get_text(separator=' ')
-        post = re.sub('\n', '', post)
-        return ' '.join(post.split())
+    @property
+    def users_posts(self):
+        return zip(self.users, self.posts)
 
 
-class JcinkThread():
+class JcinkThread:
     def __init__(self, url):
         self.url = url
-        self.set_pages()
-        self.set_titles()
-
-    def set_pages(self):
-        # instantiate all pages at beginning
-        pages = []
-        for i in range(self.n_pages):
-            url = '{pref}&st={st}'.format(pref=self.url, st=20*i)
-            pages.append(JcinkPage(url))
-        self.pages = pages
-
-    def set_titles(self):
-        page = JcinkPage(self.url)
-        tag = 'span'
-        title_attrs = {'class': 'topic-title'}
-        subtitle_attrs = {'class': 'topic-desc'}
-
-        raw_title = page.soup.find(tag, title_attrs)
-        self.title = raw_title.text
-
-        raw_subtitle = page.soup.find(tag, subtitle_attrs)
-        # subtitles start with ', ' by default
-        self.subtitle = raw_subtitle.text[2:]
+        self.pages = self.get_pages()
 
     @property
     def n_pages(self):
@@ -79,7 +76,7 @@ class JcinkThread():
         norm_attrs = {'class': 'pagination_page'}
         pagination_last = page.soup.find(tag, last_attrs)
         if pagination_last:
-            num = int(re.search('\d+', pagination_last.get('title')).group(0))
+            num = int(re.search('Page: (\d+)', pagination_last.get('title')).group(1))
         elif page.soup.find(tag, norm_attrs):
             all_found_pages = page.soup.find_all(tag, norm_attrs)
             pages = {int(i.get_text()) for i in all_found_pages}
@@ -88,10 +85,43 @@ class JcinkThread():
             num = 1
         return num
 
-    def ordered_posts(self):
-        posts = []
+    def get_pages(self):
+        # instantiate all pages at beginning
+        pages = {}
+        for i in range(self.n_pages):
+            url = '{pref}&st={st}'.format(pref=self.url, st=20*i)
+            pages[i+1] = JcinkPage(url)
+        return pages
+
+    @property
+    def title(self):
+        # get page 1
+        page = self.pages[1]
+        tag = 'span'
+        attrs = {'class': 'topic-title'}
+        return page.soup.find(tag, attrs).text
+
+    @property
+    def subtitle(self):
+        # get page 1
+        page = self.pages[1]
+        tag = 'span'
+        attrs = {'class': 'topic-desc'}
+        # subtitles starts with ', ' by default
+        return page.soup.find(tag, attrs).text[2:]
+
+    @property
+    def all_users_posts(self):
         users = []
-        for page in self.pages:
-            posts.extend(page.posts)
-            users.extend(page.users)
-        return posts, users
+        posts = []
+        for n in range(self.n_pages):
+            page_users_posts = self.pages[n+1].users_posts
+            for user, post in page_users_posts:
+                users.append(user)
+                posts.append(post)
+        return users, posts
+
+    @property
+    def output(self):
+        scorer = jeeves_score.ThreadScore(*self.all_users_posts)
+        return scorer.printout()
