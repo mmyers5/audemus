@@ -40,7 +40,7 @@ class ThreadScore:
         lpu = {}
         for user in self.words_per_user:
             word_count = self.words_per_user[user]
-            lpu[user] = int(word_count/n_words)
+            lpu[user] = int(self.words_all/n_words)
         return lpu
 
     def dollars_per_user(self, n_words=10.):
@@ -71,10 +71,10 @@ class ThreadScore:
                     n_words=self.words_per_user[user]
                 ),
                 '\tLevels earned: {n_levels}'.format(
-                    n_levels=lpu[user]
+                    n_levels=lpu[user] if self.words_per_user[user] >= 750 else 0
                 ),
                 '\tPokédollars earned: {n_dollars}'.format(
-                    n_dollars=dpu[user]
+                    n_dollars=dpu[user] if dpu[user] > 0 else 0
                 )
             ])
         return '\n'.join(print_list)
