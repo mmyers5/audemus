@@ -128,7 +128,7 @@ class Shiny(BaseInput):
 
 class Form(BaseInput):
     VALID_INPUTS = [
-        'Form', 'Alola', 'Archipelago', 'Blade', 'Blue', 'Blue Striped', 'Bug', 'Busted', 'Continental', 'Dandy',
+        'Form', 'Audean', 'Alola', 'Archipelago', 'Blade', 'Blue', 'Blue Striped', 'Bug', 'Busted', 'Continental', 'Dandy',
         'Dark', 'Debutante', 'Diamond', 'Dragon', 'Dusk', 'East', 'Electric', 'Elegant', 'Fairy', 'Fall', 'Fan',
         'Fancy', 'Female', 'Fighting', 'Fire', 'Flying', 'Frost', 'Galar', 'Galar Zen', 'Garden', 'Ghost', 'Grass',
         'Green', 'Ground', 'Heart', 'Heat', 'High Plains', 'Ice', 'Icy Snow', 'Indigo', 'Jungle', 'Kabuki', 'La Reine',
