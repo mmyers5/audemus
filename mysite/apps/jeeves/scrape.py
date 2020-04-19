@@ -6,6 +6,12 @@ from bs4 import BeautifulSoup
 from apps.jeeves import score as jeeves_score
 from apps.secrets import USERNAME, PASSWORD
 
+REMOVE_TAGS = [
+    {'name': 'div', 'class_': 'ooc'},
+    {'name': 'span', 'class_': 'edit'},
+    {'name': 'a', 'alt': 'profile link'}
+]
+
 
 class JcinkBase:
     def __init__(self):
@@ -28,8 +34,15 @@ class JcinkPage(JcinkBase):
             page_response = s.get(self.url)
         return BeautifulSoup(page_response.text, 'html.parser')
 
+    def decompose_post(self, post):
+        for tag_params in REMOVE_TAGS:
+            tags = post.find_all(**tag_params)
+            for t in tags:
+                t.decompose()
+
     def parse_post(self, post):
-        post = post.get_text(separator=' ')
+        self.decompose_post(post)
+        post = post.get_text(separator=' ', strip=True)
         post = re.sub('\n', '', post)
         return ' '.join(post.split())
 
